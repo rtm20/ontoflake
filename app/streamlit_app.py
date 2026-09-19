@@ -12,6 +12,8 @@ import streamlit as st
 
 SV = "ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN"
 PERSONAS = ["SC_PLANNING", "SC_PROCUREMENT", "SC_LOGISTICS", "SC_LOGISTICS_APAC"]
+ENTITY_LABEL_DIM = {"SUPPLIER": "supplier.supplier_name", "PART": "part.part_number", "PLANT": "plant.plant_name",
+                    "CUSTOMER": "customer.customer_name", "CARRIER": "carrier.carrier_name"}
 
 st.set_page_config(page_title="OntoFlake", page_icon="❄️", layout="wide")
 
@@ -155,6 +157,11 @@ with tab_ask:
         mets = match_objects(question, meta["METRIC"])
         dims = match_objects(question, meta["DIMENSION"])
         dims = [d for d in dims if not d.endswith("_date")][:3]
+        for t in match_objects(question, meta["TABLE"]):
+            ent = t.split(".")[0].upper()
+            if ent in ENTITY_LABEL_DIM and not any(d.startswith(ent.lower() + ".") for d in dims):
+                dims.append(ENTITY_LABEL_DIM[ent])
+        dims = dims[:3]
         if not mets:
             st.warning("No governed metric recognised. Try one of the glossary synonyms.")
         else:
