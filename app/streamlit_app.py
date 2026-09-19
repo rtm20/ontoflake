@@ -5,6 +5,7 @@ Runs as Streamlit in Snowflake (get_active_session) or locally (connections.toml
 import json
 import re
 from collections import defaultdict
+from decimal import Decimal
 
 import pandas as pd
 import streamlit as st
@@ -41,8 +42,14 @@ session = get_session()
 
 
 def sql(q: str) -> pd.DataFrame:
-    df = session.sql(q).to_pandas()
-    df.columns = [c.strip('"') for c in df.columns]
+    # collect() works for DESCRIBE/SHOW as well as SELECT; to_pandas() does not on all Snowpark versions.
+    sdf = session.sql(q)
+    rows = sdf.collect()
+    df = pd.DataFrame([r.as_dict() for r in rows]) if rows else pd.DataFrame(columns=sdf.columns)
+    df.columns = [str(c).strip('"') for c in df.columns]
+    for c in df.columns:
+        if df[c].dtype == object and df[c].map(lambda v: v is None or isinstance(v, Decimal)).all():
+            df[c] = df[c].astype(float)
     return df
 
 
