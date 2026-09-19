@@ -3,3 +3,4 @@ snowflake-snowpark-python>=1.20,<2
 snowflake-connector-python[pandas]>=3.10,<4
 pandas>=2.0,<3
 cryptography>=42
+setuptools>=68,<81
