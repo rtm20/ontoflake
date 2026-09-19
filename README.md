@@ -2,6 +2,8 @@
 
 > **Snowflake CoCo CLI Hackathon 2026 · Challenge 5: Supply Chain Ontology and Governed Conversational Analytics**
 > Team **OntoFlake-AI**
+>
+> **Live app:** https://ontoflake-y2n9kim3odh66hkhdn7zfa.streamlit.app/
 
 One ontology. One definition per metric. One answer for every persona.
 
@@ -102,9 +104,11 @@ SELECT * FROM SEMANTIC_VIEW(
 ### Run the app
 
 * **Streamlit in Snowflake**: `cd app; snow streamlit deploy --replace` (or `deploy.ps1 -Steps app`).
-* **Streamlit Community Cloud**: point at `app/streamlit_app.py`, paste `.streamlit/secrets.toml` (see `secrets.toml.example`).
-  The app authenticates as `ONTOFLAKE_APP_SVC` / `SC_APP_VIEWER` with key-pair auth - read-only, no passwords.
-* **Local**: `streamlit run app/streamlit_app.py` (uses `.streamlit/secrets.toml`, else `~/.snowflake/connections.toml`).
+* **Streamlit Community Cloud**: main file **`streamlit_app.py`** (repo root - it delegates to `app/streamlit_app.py`), Python **3.11**,
+  paste `.streamlit/secrets.toml` (see `secrets.toml.example`). The app authenticates as `ONTOFLAKE_APP_SVC` / `SC_APP_VIEWER`
+  with key-pair auth - read-only, no passwords. Do not point Cloud at `app/` directly: `app/environment.yml` is the
+  Streamlit-in-Snowflake conda spec and Cloud would pick it up instead of `requirements.txt`.
+* **Local**: `streamlit run streamlit_app.py` (uses `.streamlit/secrets.toml`, else `~/.snowflake/connections.toml`).
 
 ## Data
 
