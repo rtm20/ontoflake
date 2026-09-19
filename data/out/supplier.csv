@@ -1,0 +1,61 @@
+supplier_id,supplier_name,supplier_tier,supplier_country,supplier_region,commodity_focus,risk_rating
+S0001,Nordic Forgings Pvt Ltd 1,TIER1,TH,APAC,Forgings,LOW
+S0002,Titan Forgings Inc 2,TIER1,US,NA,Forgings,LOW
+S0003,Orion Castings GmbH 3,TIER2,FR,EMEA,Castings,LOW
+S0004,Titan Controllers GmbH 4,TIER3,CA,NA,Controllers,LOW
+S0005,Vega Fabrications GmbH 5,TIER3,TH,APAC,Fabrications,MEDIUM
+S0006,Vega Pumps GmbH 6,TIER1,CA,NA,Pumps,MEDIUM
+S0007,Apex Hoses Inc 7,TIER2,MX,NA,Hoses,MEDIUM
+S0008,Delta Controllers SA 8,TIER2,AR,LATAM,Controllers,LOW
+S0009,Titan Valves Pvt Ltd 9,TIER1,TH,APAC,Valves,LOW
+S0010,Nordic Bearings SA 10,TIER2,DE,EMEA,Bearings,LOW
+S0011,Vega Hoses Ltd 11,TIER1,IN,APAC,Hoses,LOW
+S0012,Sakura Bearings Pvt Ltd 12,TIER2,TR,EMEA,Bearings,HIGH
+S0013,Apex Sensors Pvt Ltd 13,TIER3,TH,APAC,Sensors,LOW
+S0014,Nordic Forgings GmbH 14,TIER3,US,NA,Forgings,MEDIUM
+S0015,Titan Hoses Inc 15,TIER2,CA,NA,Hoses,HIGH
+S0016,Lotus Sheet Metal GmbH 16,TIER2,AR,LATAM,Sheet Metal,LOW
+S0017,Apex Controllers Inc 17,TIER1,CA,NA,Controllers,LOW
+S0018,Lotus Controllers Inc 18,TIER1,US,NA,Controllers,MEDIUM
+S0019,Apex Pumps GmbH 19,TIER1,AR,LATAM,Pumps,LOW
+S0020,Sakura Controllers Ltd 20,TIER3,BR,LATAM,Controllers,LOW
+S0021,Titan Valves SA 21,TIER3,CA,NA,Valves,LOW
+S0022,Lotus Castings Inc 22,TIER1,TR,EMEA,Castings,LOW
+S0023,Sakura Castings GmbH 23,TIER2,DE,EMEA,Castings,HIGH
+S0024,Delta Bearings Pvt Ltd 24,TIER1,CA,NA,Bearings,LOW
+S0025,Titan Forgings Inc 25,TIER2,JP,APAC,Forgings,MEDIUM
+S0026,Nordic Valves GmbH 26,TIER2,FR,EMEA,Valves,LOW
+S0027,Lotus Sensors Pvt Ltd 27,TIER1,CN,APAC,Sensors,MEDIUM
+S0028,Sakura Fasteners Ltd 28,TIER2,JP,APAC,Fasteners,LOW
+S0029,Apex Sheet Metal GmbH 29,TIER2,DE,EMEA,Sheet Metal,MEDIUM
+S0030,Titan Castings Pvt Ltd 30,TIER1,FR,EMEA,Castings,LOW
+S0031,Sakura Sheet Metal GmbH 31,TIER3,CA,NA,Sheet Metal,LOW
+S0032,Titan Castings Pvt Ltd 32,TIER3,AR,LATAM,Castings,MEDIUM
+S0033,Orion Bearings SA 33,TIER3,DE,EMEA,Bearings,MEDIUM
+S0034,Delta Harnesses Inc 34,TIER1,BR,LATAM,Harnesses,MEDIUM
+S0035,Orion Controllers Ltd 35,TIER2,IN,APAC,Controllers,MEDIUM
+S0036,Vega Sensors Inc 36,TIER2,AR,LATAM,Sensors,LOW
+S0037,Nordic Castings SA 37,TIER1,FR,EMEA,Castings,MEDIUM
+S0038,Delta Sensors Ltd 38,TIER1,DE,EMEA,Sensors,LOW
+S0039,Vega Controllers Pvt Ltd 39,TIER2,TH,APAC,Controllers,LOW
+S0040,Apex Fasteners Ltd 40,TIER3,TR,EMEA,Fasteners,LOW
+S0041,Sakura Fabrications GmbH 41,TIER2,TR,EMEA,Fabrications,LOW
+S0042,Delta Fasteners Inc 42,TIER2,TH,APAC,Fasteners,LOW
+S0043,Titan Valves Inc 43,TIER2,DE,EMEA,Valves,LOW
+S0044,Lotus Castings GmbH 44,TIER3,BR,LATAM,Castings,LOW
+S0045,Lotus Valves Pvt Ltd 45,TIER1,CA,NA,Valves,MEDIUM
+S0046,Vega Pumps Inc 46,TIER3,CN,APAC,Pumps,MEDIUM
+S0047,Orion Hoses Ltd 47,TIER2,FR,EMEA,Hoses,MEDIUM
+S0048,Orion Bearings Pvt Ltd 48,TIER1,CA,NA,Bearings,LOW
+S0049,Vega Harnesses SA 49,TIER3,US,NA,Harnesses,MEDIUM
+S0050,Titan Hoses SA 50,TIER2,TR,EMEA,Hoses,LOW
+S0051,Apex Fasteners SA 51,TIER2,PL,EMEA,Fasteners,LOW
+S0052,Orion Castings Inc 52,TIER1,TH,APAC,Castings,LOW
+S0053,Apex Pumps GmbH 53,TIER1,PL,EMEA,Pumps,HIGH
+S0054,Lotus Castings Ltd 54,TIER2,DE,EMEA,Castings,MEDIUM
+S0055,Nordic Fabrications Pvt Ltd 55,TIER2,MX,NA,Fabrications,LOW
+S0056,Nordic Fabrications Ltd 56,TIER2,FR,EMEA,Fabrications,MEDIUM
+S0057,Nordic Forgings Pvt Ltd 57,TIER2,JP,APAC,Forgings,MEDIUM
+S0058,Sakura Pumps SA 58,TIER3,US,NA,Pumps,LOW
+S0059,Vega Fasteners Ltd 59,TIER1,CN,APAC,Fasteners,MEDIUM
+S0060,Apex Sensors SA 60,TIER3,CA,NA,Sensors,MEDIUM

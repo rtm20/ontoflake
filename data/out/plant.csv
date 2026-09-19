@@ -1,0 +1,7 @@
+plant_id,plant_code,plant_name,plant_country,plant_region,plant_type
+P100,P100,Waterloo Works,US,NA,MANUFACTURING
+P200,P200,Mannheim Plant,DE,EMEA,MANUFACTURING
+P300,P300,Pune Works,IN,APAC,MANUFACTURING
+P400,P400,Tianjin Plant,CN,APAC,MANUFACTURING
+P500,P500,Horizontina Plant,BR,LATAM,MANUFACTURING
+P600,P600,Bangkok DC,TH,APAC,DISTRIBUTION

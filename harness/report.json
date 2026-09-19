@@ -1,0 +1,240 @@
+{
+  "semantic_view": "ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN",
+  "personas": [
+    "SC_PLANNING",
+    "SC_PROCUREMENT",
+    "SC_LOGISTICS",
+    "SC_LOGISTICS_APAC"
+  ],
+  "questions": [
+    {
+      "id": "Q01",
+      "text": "What is supplier on-time delivery by plant region?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS plant.plant_region METRICS shipment.supplier_otd_pct, shipment.shipment_count)",
+      "baseline_rows": 4,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 4,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 4,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 4,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 1,
+          "failures": []
+        }
+      }
+    },
+    {
+      "id": "Q02",
+      "text": "What is our fill rate and backorder quantity by plant?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS plant.plant_name, plant.plant_region METRICS so_line.fill_rate_pct, so_line.backorder_qty)",
+      "baseline_rows": 6,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 6,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 6,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 6,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 3,
+          "failures": []
+        }
+      }
+    },
+    {
+      "id": "Q03",
+      "text": "How many days of inventory do we hold by category at the latest month end?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS part.category, plant.plant_region, inventory.snapshot_date METRICS inventory.days_of_inventory, inventory.inventory_value_total) WHERE snapshot_date = '2026-06-30'",
+      "baseline_rows": 16,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 4,
+          "failures": []
+        }
+      }
+    },
+    {
+      "id": "Q04",
+      "text": "What is landed cost per unit by transport mode?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS carrier.transport_mode, plant.plant_region METRICS shipment.landed_cost_per_unit, shipment.freight_pct_of_landed)",
+      "baseline_rows": 16,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 4,
+          "failures": []
+        }
+      }
+    },
+    {
+      "id": "Q05",
+      "text": "What is customer on-time delivery by month?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS so_line.order_month, plant.plant_region METRICS so_line.customer_otd_pct, so_line.revenue_total)",
+      "baseline_rows": 68,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 68,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 68,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 68,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 17,
+          "failures": []
+        }
+      }
+    },
+    {
+      "id": "Q06",
+      "text": "What is PO spend and purchase price variance by category?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS part.category, plant.plant_region METRICS po_line.po_spend, po_line.purchase_price_variance)",
+      "baseline_rows": 16,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 4,
+          "failures": []
+        }
+      }
+    },
+    {
+      "id": "Q07",
+      "text": "Which suppliers have the worst defect rate?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS supplier.supplier_name, plant.plant_region METRICS shipment.supplier_defect_rate_pct, shipment.received_qty)",
+      "baseline_rows": 230,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 230,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 230,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 230,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 60,
+          "failures": []
+        }
+      }
+    },
+    {
+      "id": "Q08",
+      "text": "What is average supplier lead time by supplier region?",
+      "sql": "SELECT * FROM SEMANTIC_VIEW(ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN DIMENSIONS supplier.supplier_region, plant.plant_region METRICS shipment.avg_lead_time_days, shipment.supplier_otif_pct)",
+      "baseline_rows": 16,
+      "results": {
+        "SC_PLANNING": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_PROCUREMENT": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS": {
+          "status": "PASS",
+          "rows": 16,
+          "failures": []
+        },
+        "SC_LOGISTICS_APAC": {
+          "status": "PASS",
+          "rows": 4,
+          "failures": []
+        }
+      }
+    }
+  ],
+  "summary": {
+    "questions": 8,
+    "personas": 4,
+    "failed_cells": 0
+  }
+}

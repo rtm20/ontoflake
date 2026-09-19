@@ -1,0 +1,150 @@
+# OntoFlake — Supply Chain Ontology (single source of truth)
+# Everything downstream (DDL, semantic views, Cortex Analyst model, harness, docs) derives from this file.
+
+ontology:
+  name: supply_chain
+  version: 0.1.0
+  description: >
+    Canonical business model for a discrete-manufacturing supply chain:
+    Supplier -> Part -> Plant -> Purchase Order -> Inbound Shipment -> Inventory -> Sales Order -> Outbound Shipment -> Customer.
+
+entities:
+  supplier:
+    description: External vendor that supplies parts to one or more plants.
+    key: supplier_id
+    attributes: [supplier_name, supplier_tier, supplier_country, supplier_region, commodity_focus, risk_rating]
+  part:
+    description: Purchased or manufactured material identified by a part number.
+    key: part_id
+    attributes: [part_number, part_description, commodity, category, uom, abc_class, standard_cost, lifecycle_status]
+  plant:
+    description: Manufacturing or distribution site that consumes and ships parts.
+    key: plant_id
+    attributes: [plant_code, plant_name, plant_country, plant_region, plant_type]
+  customer:
+    description: Dealer or end customer that places sales orders.
+    key: customer_id
+    attributes: [customer_name, customer_segment, customer_country, customer_region, channel]
+  carrier:
+    description: Logistics provider moving inbound or outbound freight.
+    key: carrier_id
+    attributes: [carrier_name, transport_mode, service_level]
+  source_list:
+    description: Approved supplier-part-plant sourcing record with agreed price and lead time.
+    key: source_id
+    attributes: [agreed_unit_price, agreed_lead_time_days, moq, is_primary_source, currency]
+  purchase_order_line:
+    description: A line on a purchase order placed by a plant with a supplier for a part.
+    key: po_line_id
+    attributes: [po_number, order_date, requested_date, promised_date, qty_ordered, unit_price, currency]
+  inbound_shipment:
+    description: Physical delivery of a PO line from supplier to plant.
+    key: shipment_id
+    attributes: [ship_date, delivery_date, qty_shipped, qty_received, qty_rejected, freight_cost, duty_cost, insurance_cost, handling_cost]
+  inventory_position:
+    description: Month-end on-hand stock of a part at a plant with trailing demand rate.
+    key: [snapshot_date, plant_id, part_id]
+    attributes: [qty_on_hand, unit_cost, avg_daily_demand_qty, safety_stock_qty]
+  sales_order_line:
+    description: A line on a customer sales order fulfilled from a plant.
+    key: so_line_id
+    attributes: [so_number, order_date, requested_date, qty_ordered, qty_shipped, unit_price, ship_date, delivery_date]
+
+relationships:
+  - {name: source_list_supplier,   from: source_list,         to: supplier, cardinality: many_to_one}
+  - {name: source_list_part,       from: source_list,         to: part,     cardinality: many_to_one}
+  - {name: source_list_plant,      from: source_list,         to: plant,    cardinality: many_to_one}
+  - {name: po_line_supplier,       from: purchase_order_line, to: supplier, cardinality: many_to_one}
+  - {name: po_line_part,           from: purchase_order_line, to: part,     cardinality: many_to_one}
+  - {name: po_line_plant,          from: purchase_order_line, to: plant,    cardinality: many_to_one}
+  - {name: shipment_po_line,       from: inbound_shipment,    to: purchase_order_line, cardinality: many_to_one}
+  - {name: shipment_carrier,       from: inbound_shipment,    to: carrier,  cardinality: many_to_one}
+  - {name: inventory_part,         from: inventory_position,  to: part,     cardinality: many_to_one}
+  - {name: inventory_plant,        from: inventory_position,  to: plant,    cardinality: many_to_one}
+  - {name: so_line_customer,       from: sales_order_line,    to: customer, cardinality: many_to_one}
+  - {name: so_line_part,           from: sales_order_line,    to: part,     cardinality: many_to_one}
+  - {name: so_line_plant,          from: sales_order_line,    to: plant,    cardinality: many_to_one}
+  - {name: so_line_carrier,        from: sales_order_line,    to: carrier,  cardinality: many_to_one}
+
+hierarchies:
+  geography:      [country, region, global]
+  part_taxonomy:  [part, commodity, category]
+  time:           [day, week, month, quarter, year]
+  supplier_tier:  [supplier, tier]
+
+# Canonical metrics. `grain` = the fact each metric is computed over. `formula` is the one and only definition.
+metrics:
+  supplier_otd_pct:
+    label: Supplier On-Time Delivery %
+    grain: inbound_shipment
+    formula: 100 * SUM(qty_received WHERE delivery_date <= promised_date) / SUM(qty_received)
+    owner: procurement
+    notes: Quantity-weighted. Promised date from the PO line, not the supplier ASN.
+  supplier_otif_pct:
+    label: Supplier OTIF %
+    grain: inbound_shipment
+    formula: 100 * COUNT(shipments delivered on time AND qty_received >= qty_ordered) / COUNT(shipments)
+    owner: procurement
+  customer_otd_pct:
+    label: Customer On-Time Delivery %
+    grain: sales_order_line
+    formula: 100 * SUM(qty_shipped WHERE delivery_date <= requested_date) / SUM(qty_shipped)
+    owner: logistics
+  fill_rate_pct:
+    label: Fill Rate %
+    grain: sales_order_line
+    formula: 100 * SUM(qty_shipped) / SUM(qty_ordered)
+    owner: planning
+    notes: First-pass fill; backorders are not counted as filled.
+  days_of_inventory:
+    label: Days of Inventory
+    grain: inventory_position
+    formula: SUM(qty_on_hand) / SUM(avg_daily_demand_qty)
+    owner: planning
+    notes: Demand rate is trailing-90-day shipped quantity per day. Quantity based, not value based.
+  inventory_value:
+    label: Inventory Value
+    grain: inventory_position
+    formula: SUM(qty_on_hand * unit_cost)
+    owner: planning
+  landed_cost:
+    label: Total Landed Cost
+    grain: inbound_shipment
+    formula: SUM(qty_received * unit_price + freight_cost + duty_cost + insurance_cost + handling_cost)
+    owner: procurement
+  landed_cost_per_unit:
+    label: Landed Cost per Unit
+    grain: inbound_shipment
+    formula: landed_cost / SUM(qty_received)
+    owner: procurement
+  po_spend:
+    label: PO Spend
+    grain: purchase_order_line
+    formula: SUM(qty_ordered * unit_price)
+    owner: procurement
+  purchase_price_variance:
+    label: Purchase Price Variance
+    grain: purchase_order_line
+    formula: SUM((unit_price - standard_cost) * qty_ordered)
+    owner: procurement
+  lead_time_days_actual:
+    label: Actual Lead Time (days)
+    grain: inbound_shipment
+    formula: AVG(delivery_date - order_date)
+    owner: planning
+  supplier_defect_rate_pct:
+    label: Supplier Defect Rate %
+    grain: inbound_shipment
+    formula: 100 * SUM(qty_rejected) / SUM(qty_received + qty_rejected)
+    owner: procurement
+  backorder_qty:
+    label: Backorder Quantity
+    grain: sales_order_line
+    formula: SUM(qty_ordered - qty_shipped)
+    owner: logistics
+
+personas:
+  planning:    {role: SC_PLANNING,    scope: global,  primary_metrics: [fill_rate_pct, days_of_inventory, inventory_value, lead_time_days_actual]}
+  procurement: {role: SC_PROCUREMENT, scope: global,  primary_metrics: [supplier_otd_pct, landed_cost_per_unit, po_spend, purchase_price_variance]}
+  logistics:   {role: SC_LOGISTICS,   scope: global,  primary_metrics: [customer_otd_pct, supplier_otd_pct, backorder_qty]}
+  logistics_apac: {role: SC_LOGISTICS_APAC, scope: {plant_region: APAC}, primary_metrics: [customer_otd_pct, backorder_qty]}

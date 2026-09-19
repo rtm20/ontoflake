@@ -1,0 +1,13 @@
+# Copy to config/connections.toml (gitignored), fill in, then run: .\scripts\setup-connection.ps1
+# Copied to ~/.snowflake/connections.toml, which both `snow` and `cortex` read.
+
+default_connection_name = "hackathon"
+
+[hackathon]
+account   = "ORG-ACCOUNT"
+user      = "YOUR_USER"
+password  = "YOUR_PASSWORD"
+role      = "ACCOUNTADMIN"
+warehouse = "COMPUTE_WH"
+database  = "SNOWFLAKE_SAMPLE_DATA"
+schema    = "TPCH_SF1"

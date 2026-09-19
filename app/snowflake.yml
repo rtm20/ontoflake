@@ -1,0 +1,14 @@
+definition_version: 2
+entities:
+  ontoflake_app:
+    type: streamlit
+    identifier:
+      name: ONTOFLAKE_APP
+      database: ONTOFLAKE
+      schema: SEMANTIC
+    title: OntoFlake - Governed Supply Chain Analytics
+    query_warehouse: COMPUTE_WH
+    main_file: streamlit_app.py
+    artifacts:
+      - streamlit_app.py
+      - environment.yml

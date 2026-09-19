@@ -1,0 +1,13 @@
+# Fill in `password`, then run: .\scripts\setup-connection.ps1
+# This file is gitignored. It is copied to ~/.snowflake/connections.toml, which both `snow` and `cortex` read.
+
+default_connection_name = "hackathon"
+
+[hackathon]
+account   = "GCIJBYC-XL51428"
+user      = "JARVIS20"
+password  = "RiteshMeena@2099"
+role      = "ACCOUNTADMIN"
+warehouse = "COMPUTE_WH"
+database  = "SNOWFLAKE_SAMPLE_DATA"
+schema    = "TPCH_SF1"

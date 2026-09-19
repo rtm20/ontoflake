@@ -1,0 +1,44 @@
+# Golden questions. Each is run under every persona role; answers must be identical for global personas,
+# and for scoped personas must equal the global answer filtered to their scope. Masked metrics are expected NULL.
+semantic_view: ONTOFLAKE.SEMANTIC.SUPPLY_CHAIN
+
+personas:
+  SC_PLANNING:       {scope: global}
+  SC_PROCUREMENT:    {scope: global}
+  SC_LOGISTICS:      {scope: global, masked_metrics: [po_line.po_spend, po_line.purchase_price_variance]}
+  SC_LOGISTICS_APAC: {scope: {plant_region: APAC}, masked_metrics: [po_line.po_spend, po_line.purchase_price_variance]}
+
+questions:
+  - id: Q01
+    text: What is supplier on-time delivery by plant region?
+    dimensions: [plant.plant_region]
+    metrics: [shipment.supplier_otd_pct, shipment.shipment_count]
+  - id: Q02
+    text: What is our fill rate and backorder quantity by plant?
+    dimensions: [plant.plant_name, plant.plant_region]
+    metrics: [so_line.fill_rate_pct, so_line.backorder_qty]
+  - id: Q03
+    text: How many days of inventory do we hold by category at the latest month end?
+    dimensions: [part.category, plant.plant_region, inventory.snapshot_date]
+    metrics: [inventory.days_of_inventory, inventory.inventory_value_total]
+    where: snapshot_date = '2026-06-30'
+  - id: Q04
+    text: What is landed cost per unit by transport mode?
+    dimensions: [carrier.transport_mode, plant.plant_region]
+    metrics: [shipment.landed_cost_per_unit, shipment.freight_pct_of_landed]
+  - id: Q05
+    text: What is customer on-time delivery by month?
+    dimensions: [so_line.order_month, plant.plant_region]
+    metrics: [so_line.customer_otd_pct, so_line.revenue_total]
+  - id: Q06
+    text: What is PO spend and purchase price variance by category?
+    dimensions: [part.category, plant.plant_region]
+    metrics: [po_line.po_spend, po_line.purchase_price_variance]
+  - id: Q07
+    text: Which suppliers have the worst defect rate?
+    dimensions: [supplier.supplier_name, plant.plant_region]
+    metrics: [shipment.supplier_defect_rate_pct, shipment.received_qty]
+  - id: Q08
+    text: What is average supplier lead time by supplier region?
+    dimensions: [supplier.supplier_region, plant.plant_region]
+    metrics: [shipment.avg_lead_time_days, shipment.supplier_otif_pct]

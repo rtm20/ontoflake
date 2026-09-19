@@ -1,0 +1,8 @@
+carrier_id,carrier_name,transport_mode,service_level
+C01,Maersk,OCEAN,STANDARD
+C02,DHL Global,AIR,EXPRESS
+C03,DB Schenker,ROAD,STANDARD
+C04,Kuehne+Nagel,OCEAN,ECONOMY
+C05,FedEx Freight,ROAD,EXPRESS
+C06,Blue Dart,AIR,STANDARD
+C07,Concor Rail,RAIL,ECONOMY
