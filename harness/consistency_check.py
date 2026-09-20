@@ -17,6 +17,9 @@ import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TOL = Decimal("0.000001")
+# Baseline = an unscoped, unmasked role. ACCOUNTADMIN locally; a global persona in CI (service user is not admin).
+BASELINE_ROLE = os.environ.get("HARNESS_BASELINE_ROLE", "ACCOUNTADMIN")
+PERSIST = os.environ.get("HARNESS_NO_PERSIST", "") == ""
 
 
 def load_spec():
@@ -106,7 +109,7 @@ def main():
     for q in spec["questions"]:
         sql = build_sql(spec["semantic_view"], q)
         n_dims = len(q["dimensions"])
-        cols, baseline = run(cur, "ACCOUNTADMIN", sql, n_dims)
+        cols, baseline = run(cur, BASELINE_ROLE, sql, n_dims)
         qrep = {"id": q["id"], "text": q["text"], "sql": sql, "baseline_rows": len(baseline), "results": {}}
         line = f"{q['id']:<5}{q['text'][:60]:<62}"
         for name, persona in spec["personas"].items():
@@ -122,7 +125,8 @@ def main():
     report["summary"] = {"questions": len(spec["questions"]), "personas": len(spec["personas"]), "failed_cells": total_fail}
     with open(os.path.join(HERE, "report.json"), "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2, default=str)
-    persist(cur, report)
+    if PERSIST:
+        persist(cur, report)
 
     print(f"\n{len(spec['questions'])} questions x {len(spec['personas'])} personas -> {total_fail} failing cells")
     for qrep in report["questions"]:
