@@ -80,8 +80,7 @@ button[kind="secondary"] {{ border-radius:999px !important; }}
 
 
 # ---------- session ----------
-@st.cache_resource
-def get_session():
+def _build_session():
     # 1) Streamlit in Snowflake  2) Streamlit Community Cloud via st.secrets (key-pair)  3) local connections.toml
     try:
         from snowflake.snowpark.context import get_active_session
@@ -99,6 +98,28 @@ def get_session():
                 serialization.Encoding.DER, serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
         return Session.builder.configs(cfg).create()
     return Session.builder.config("connection_name", "hackathon").create()
+
+
+@st.cache_resource
+def _session_holder():
+    return {"session": _build_session()}
+
+
+def get_session():
+    """Cached session, rebuilt if the auth token expired (key-pair JWTs live ~1h; the process lives much longer)."""
+    holder = _session_holder()
+    try:
+        holder["session"].sql("SELECT 1").collect()
+    except Exception as e:
+        if any(k in str(e) for k in ("token has expired", "390114", "Connection is closed", "closed session")):
+            try:
+                holder["session"].close()
+            except Exception:
+                pass
+            holder["session"] = _build_session()
+        else:
+            raise
+    return holder["session"]
 
 
 session = get_session()
